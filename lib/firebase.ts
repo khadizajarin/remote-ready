@@ -6,13 +6,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Tomar Firebase Console theke pawa credentials ekhane boshau
 const firebaseConfig = {
-   apiKey: "AIzaSyC2gXXVwHgOJgMdEPcFfXNNTnD-0wjGTNA",
-  authDomain: "remote-ready-c3562.firebaseapp.com",
-  projectId: "remote-ready-c3562",
-  storageBucket: "remote-ready-c3562.firebasestorage.app",
-  messagingSenderId: "1095845952091",
-  appId: "1:1095845952091:web:884a92f27b46757da4dd7e",
-  measurementId: "G-JENS536T2W"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Next.js client-side refresh-e jate bar bar app initialize na hoy, sheta handle kora
@@ -23,3 +23,4 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 export default app;
+
