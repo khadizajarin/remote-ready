@@ -1,26 +1,134 @@
-@import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Warm Cozy Design System Mapping */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* Radius & Shadows */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.6);
+  
+  --shadow-cozy: var(--shadow-cozy);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-glow: var(--shadow-glow);
+
+  /* Transitions */
+  --transition-smooth: var(--transition-smooth);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Warm cozy cafe palette - HSL Pure Values */
+  --background: 36 33% 96%;        /* warm cream */
+  --foreground: 24 28% 16%;        /* espresso */
+
+  --card: 36 40% 98%;
+  --card-foreground: 24 28% 16%;
+
+  --popover: 36 40% 98%;
+  --popover-foreground: 24 28% 16%;
+
+  --primary: 22 45% 28%;           /* deep espresso brown */
+  --primary-foreground: 36 40% 97%;
+
+  --secondary: 32 35% 88%;         /* latte foam */
+  --secondary-foreground: 24 28% 18%;
+
+  --muted: 32 25% 90%;
+  --muted-foreground: 24 15% 38%;
+
+  --accent: 18 65% 52%;            /* terracotta */
+  --accent-foreground: 36 40% 98%;
+
+  --destructive: 0 65% 48%;
+  --destructive-foreground: 36 40% 97%;
+
+  --border: 30 20% 84%;
+  --input: 30 20% 84%;
+  --ring: 22 45% 28%;
+
+  --radius: 0.875rem;
+
+  /* Custom Utilities Data */
+  --gradient-warm: linear-gradient(135deg, hsl(35 85% 58% / 0.15), hsl(18 65% 52% / 0.12));
+  --gradient-hero: linear-gradient(180deg, hsl(24 28% 12% / 0.55), hsl(24 28% 8% / 0.75));
+  --gradient-card: linear-gradient(180deg, hsl(36 40% 98%), hsl(32 30% 94%));
+  
+  --shadow-cozy: 0 10px 30px -12px hsl(24 28% 16% / 0.18);
+  --shadow-soft: 0 4px 16px -8px hsl(24 28% 16% / 0.15);
+  --shadow-glow: 0 0 40px hsl(35 85% 58% / 0.25);
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --background: 24 20% 10%;
+  --foreground: 36 30% 92%;
+  --card: 24 20% 13%;
+  --card-foreground: 36 30% 92%;
+  --popover: 24 20% 13%;
+  --popover-foreground: 36 30% 92%;
+  --primary: 35 75% 60%;
+  --primary-foreground: 24 28% 12%;
+  --secondary: 24 15% 20%;
+  --secondary-foreground: 36 30% 92%;
+  --muted: 24 15% 18%;
+  --muted-foreground: 36 15% 65%;
+  --accent: 18 65% 52%;
+  --accent-foreground: 36 40% 97%;
+  --border: 24 15% 22%;
+  --input: 24 15% 22%;
+  --ring: 35 75% 60%;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .bg-gradient-warm { background-image: var(--gradient-warm); }
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .bg-gradient-card { background-image: var(--gradient-card); }
+  .transition-smooth { transition: var(--transition-smooth); }
 }

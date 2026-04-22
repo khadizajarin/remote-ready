@@ -1,15 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
+import Navbar from "../components/Navlink";
+import Footer from "../components/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { Inter, Playfair_Display } from "next/font/google"; // Google Fonts
+import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+const sans = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const serif = Playfair_Display({
   subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +41,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      
+      <body className={cn(
+        "min-h-screen font-sans antialiased", 
+        sans.variable, 
+        serif.variable
+      )}>
+       <AuthProvider>
+          <Toaster position="top-center" />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
