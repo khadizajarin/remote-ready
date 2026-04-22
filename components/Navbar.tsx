@@ -22,10 +22,10 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
     toast.success("Signed out. See you soon!"); // react-hot-toast syntax same
-    router.push("/"); // navigate("/") er bodole push
+    router.push("/"); 
   };
 
-  // isActive check korar logic (App Router context e)
+  
   const getLinkClass = (href: string) =>
     `text-sm font-medium transition-colors hover:text-amber-600 ${
       pathname === href ? "text-amber-600" : "text-slate-600"
@@ -65,7 +65,7 @@ const Navbar = () => {
           {user ? (
             <>
               <span className="text-sm text-muted-foreground">
-                Hi, <span className="text-foreground font-medium">{user.name}</span>
+                Hi, <span className="text-foreground font-medium">{user.displayName}</span>
               </span>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-1.5" /> Sign out

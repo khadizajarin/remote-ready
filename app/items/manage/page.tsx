@@ -29,7 +29,7 @@ type Listing = {
   hours: string;
   image?: string; // Image field add kora hoyeche
   ownerId?: string;
-  createdAt: any;
+  createdAt: unknown;
 };
 
 const MyListings = () => {
