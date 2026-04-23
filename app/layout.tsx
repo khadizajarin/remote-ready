@@ -54,20 +54,20 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  // // Twitter (X)
-  // twitter: {
-  //   card: "summary_large_image",
-  //   title: "Remote Ready",
-  //   description: "Find your next favourite cafe to work from.",
-  //   images: ["/og-image.png"], 
-  // },
+  // Twitter (X)
+  twitter: {
+    card: "summary_large_image",
+    title: "Remote Ready",
+    description: "Find your next favourite cafe to work from.",
+    images: ["/og-image.png"], 
+  },
 
-  // // Favicons
-  // icons: {
-  //   icon: "/favicon.ico",
-  //   shortcut: "/favicon.png",
-  //   apple: "/apple-touch-icon.png",
-  // },
+  // Favicons
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({

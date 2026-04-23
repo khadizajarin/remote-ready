@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // App Router hooks
-import { toast } from "react-hot-toast"; // react-hot-toast import
+import { usePathname, useRouter } from "next/navigation"; 
+import { toast } from "react-hot-toast"; 
 import { Coffee, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,13 @@ const navLinks = [
 
 const Navbar = () => {
  const { user, logout } = useAuth();
-  const router = useRouter(); // navigate er bodole router
-  const pathname = usePathname(); // isActive logic er jonno
+  const router = useRouter();
+  const pathname = usePathname(); 
   const [open, setOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    toast.success("Signed out. See you soon!"); // react-hot-toast syntax same
+    toast.success("Signed out. See you soon!"); 
     router.push("/"); 
   };
 
@@ -123,6 +123,13 @@ const Navbar = () => {
                 >
                   Add Spot
                 </Link>
+                <Link
+                  href="/city-guides"
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80"
+                >
+                  City Guides
+                </Link>
               </>
             )}
             <div className="border-t border-border/60 mt-2 pt-3 flex gap-2">
@@ -135,7 +142,7 @@ const Navbar = () => {
                   <Button variant="outline" size="sm" className="flex-1" asChild>
                     <Link href="/login" onClick={() => setOpen(false)}>Login</Link>
                   </Button>
-                  <Button size="sm" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90" asChild>
+                  <Button size="sm" className="flex-1 bg-[#d46535] text-accent-foreground hover:bg-accent/90" asChild>
                     <Link href="/signup" onClick={() => setOpen(false)}>Sign up</Link>
                   </Button>
                 </>

@@ -58,7 +58,7 @@ const AboutPage = () => {
           {values.map((v) => (
             <div 
               key={v.title} 
-              className="group rounded-3xl bg-[#fcfaf8] p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group rounded-3xl bg-gradient-card p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className={`h-14 w-14 rounded-2xl ${v.bg} ${v.color} flex items-center justify-center transition-transform group-hover:scale-110`}>
                 <v.icon className="h-6 w-6" />
@@ -87,7 +87,7 @@ const AboutPage = () => {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild size="lg" className="bg-amber-600 text-white hover:bg-amber-700 h-14 px-8 rounded-xl text-base font-bold transition-all">
-                <Link href="/explore">Browse all spots</Link>
+                <Link href="/items">Browse all spots</Link>
               </Button>
 
               {!loading && !user && (

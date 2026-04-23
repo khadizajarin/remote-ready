@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Coffee, MapPin, Sparkles, Wifi, Users } from "lucide-react";
+import { ArrowRight, Coffee, MapPin, Sparkles, Wifi, Users, Quote, Search, Bookmark } from "lucide-react";
 import heroImg from "@/public/hero-cafe.jpg";
 import { Button } from "../components/ui/button";
 import { spots } from "./data/spots";
@@ -38,12 +38,12 @@ export default function HomePage() {
               Discover cafes loved by the people who actually work in them.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-amber-500 text-black hover:bg-amber-400 shadow-lg">
+              <Button asChild size="lg" className=" bg-amber-600 text-white hover:bg-amber-700 shadow-md -200 rounded-xl px-6 h-12">
                 <Link href="/items">
                   Explore spots <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+              <Button asChild size="lg" variant="outline" className=" shadow-md rounded-xl px-6 h-12 bg-white/10 border-white/30 text-white hover:bg-white/20">
                 <Link href="/about">Our story</Link>
               </Button>
             </div>
@@ -55,7 +55,7 @@ export default function HomePage() {
                 { n: "4.8★", l: "Avg. rating" },
               ].map((s) => (
                 <div key={s.l}>
-                  <div className="font-serif text-2xl font-semibold text-amber-400">{s.n}</div>
+                  <div className="font-serif text-3xl font-semibold text-amber-300">{s.n}</div>
                   <div className="text-xs text-white/70 mt-1">{s.l}</div>
                 </div>
               ))}
@@ -82,7 +82,7 @@ export default function HomePage() {
             { icon: Users, title: "Vibe & noise", body: "We tell you if it's a quiet library hush or a buzzing brunch crowd before you go." },
             { icon: Coffee, title: "Worth the cup", body: "Only spots with coffee good enough to keep you ordering through the afternoon." },
           ].map((f) => (
-            <div key={f.title} className="rounded-2xl bg-[#fcfaf8] p-7 border border-slate-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
+            <div key={f.title} className="rounded-2xl bg-gradient-card p-7 border border-slate-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
               <div className="h-12 w-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
                 <f.icon className="h-5 w-5" />
               </div>
@@ -114,6 +114,64 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How it works */}
+      <section className="bg-muted/40 border-y border-border/60">
+        <div className="container  mx-auto py-20">
+          <div className="max-w-2xl mx-auto text-center">
+            <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">How it works</span>
+            <h2 className="mt-3 font-serif text-3xl md:text-4xl font-semibold text-balance">
+              From craving caffeine to deep work, in three steps.
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {[
+              { icon: Search, step: "01", title: "Search your city", body: "Browse curated cafes by city, vibe, or what you need to get done today." },
+              { icon: Bookmark, step: "02", title: "Pick your spot", body: "Check wifi speed, noise level, plug access, and real photos before you go." },
+              { icon: Coffee, step: "03", title: "Settle in & ship", body: "Order a flat white, open your laptop, and have your most productive afternoon." },
+            ].map((s) => (
+              <div key={s.step} className="relative">
+                <div className="font-serif text-5xl text-accent/20 font-semibold">{s.step}</div>
+                <div className="mt-3 h-12 w-12 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
+                  <s.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-5 font-serif text-xl font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="container mx-auto py-20">
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">Loved by remote workers</span>
+          <h2 className="mt-3 font-serif text-3xl md:text-4xl font-semibold text-balance">
+            Stories from the corner table.
+          </h2>
+        </div>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {[
+            { quote: "Found my new daily office in Banani. The wifi never drops and the cardamom latte is unreal.", name: "Tahmid R.", role: "Product Designer" },
+            { quote: "I travel between cities every month. Remote Ready is the first place I check before booking a stay.", name: "Sara K.", role: "Software Engineer" },
+            { quote: "The vibe ratings are spot on. No more walking into a place that turns out to be a noisy brunch spot.", name: "Imran H.", role: "Freelance Writer" },
+          ].map((t) => (
+            <figure key={t.name} className="rounded-2xl bg-gradient-card p-7 border border-border/60 shadow-soft transition-smooth hover:shadow-cozy">
+              <Quote className="h-6 w-6 text-amber" />
+              <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">
+                &quot;{t.quote}&quot;
+              </blockquote>
+              <figcaption className="mt-6 pt-5 border-t border-border/60">
+                <div className="font-serif text-base font-semibold">{t.name}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="container mx-auto px-4 pb-20">
         <div className="relative overflow-hidden rounded-3xl bg-[#744728] text-white p-10 md:p-16 shadow-xl">
@@ -125,7 +183,7 @@ export default function HomePage() {
             <p className="mt-4 text-slate-300 leading-relaxed">
               Help fellow remote workers discover the next great cafe. Add your favourite spot in under a minute.
             </p>
-            <Button asChild size="lg" className="mt-7 bg-amber-500 text-black hover:bg-amber-400">
+            <Button asChild size="lg" className="mt-7 bg-amber-600 text-white hover:bg-amber-700 shadow-md -200 rounded-xl px-6 h-12">
               <Link href="/items/add">Add a spot <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>

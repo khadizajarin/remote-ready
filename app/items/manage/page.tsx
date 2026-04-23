@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image"; // Next.js Image component import koro
-import { Coffee, MapPin, Plus, Trash2, Loader2, Wifi, Clock } from "lucide-react";
+import Image from "next/image";
+import { Coffee, MapPin, Plus, Trash2, Loader2, Wifi, Clock, Heart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/lib/firebase";
@@ -13,72 +13,88 @@ import {
   where, 
   onSnapshot, 
   doc, 
-  deleteDoc 
+  deleteDoc,
+  orderBy 
 } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 
+// Types
 type Listing = {
   id: string;
   name: string;
   city: string;
   area: string;
   tagline: string;
-  description: string;
   wifi: string;
   hours: string;
-  image?: string; // Image field add kora hoyeche
+  image?: string;
   ownerId?: string;
-  createdAt: unknown;
 };
 
-const MyListings = () => {
+type Favorite = {
+  id: string; 
+  name: string;
+  image: string;
+  area: string;
+  city: string;
+  savedAt: string;
+};
+
+const MyAccount = () => {
   const { user } = useAuth();
   const [listings, setListings] = useState<Listing[]>([]);
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     if (!user) return;
 
-    const q = query(
-      collection(db, "spots"),
-      where("ownerId", "==", user.uid)
-    );
+    // ১. Shared Spots Fetching
+    const qListings = query(collection(db, "spots"), where("ownerId", "==", user.uid));
+    const unsubListings = onSnapshot(qListings, (snapshot) => {
+      setListings(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Listing[]);
+    });
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Listing[];
-      
-      setListings(data);
+    // ২. Favorites Fetching (Sub-collection logic)
+    const favRef = collection(db, "users", user.uid, "favorites");
+    const qFavs = query(favRef, orderBy("savedAt", "desc"));
+    
+    const unsubFavs = onSnapshot(qFavs, (snapshot) => {
+      setFavorites(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Favorite[]);
       setFetching(false);
     }, (error) => {
-      console.error("Fetch error:", error);
-      toast.error("Failed to load your listings");
+      console.error(error);
       setFetching(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubListings();
+      unsubFavs();
+    };
   }, [user]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this spot?")) return;
-
+  // Shared Spot Delete
+  const handleDeleteListing = async (id: string) => {
+    if (!confirm("Remove this spot from the platform?")) return;
     try {
       await deleteDoc(doc(db, "spots", id));
-      toast.success("Spot removed successfully");
-    } catch (error) {
-      console.error("Delete error:", error);
-      toast.error("Could not delete the spot");
-    }
+      toast.success("Spot deleted");
+    } catch (error) { toast.error("Failed to delete"); }
+  };
+
+  // Favorite Remove
+  const handleRemoveFavorite = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "users", user!.uid, "favorites", id));
+      toast.success("Removed from favorites");
+    } catch (error) { toast.error("Failed to remove"); }
   };
 
   if (fetching) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
-        <p className="mt-4 text-slate-500 font-medium">Loading your shared spots...</p>
       </div>
     );
   }
@@ -127,8 +143,9 @@ const MyListings = () => {
                     <Button 
                       variant="destructive" 
                       size="icon" 
-                      onClick={() => handleDelete(l.id)}
-                      className="h-9 w-9 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => handleDeleteListing(l.id)}
+                      className="h-9 w-9 shadow-lg opacity-0 group-hover:opacity-100 
+                      absolute top-3 right-3 p-2 bg-white/90 text-rose-600 rounded-full hover:bg-rose-600 hover:text-white transition-colors"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -170,9 +187,51 @@ const MyListings = () => {
             ))}
           </div>
         )}
+        
+        {/* --- Favorites Section --- */}
+        <div>
+          <div className="mb-10 mt-20">
+            <span className="text-xs uppercase tracking-[0.2em] text-rose-500 font-bold">Personal</span>
+            <h2 className="mt-3 font-serif text-4xl font-bold text-slate-900 flex items-center gap-3">
+              Favorite Spots <Heart className="h-8 w-8 text-rose-500 fill-rose-500" />
+            </h2>
+          </div>
+
+          {favorites.length === 0 ? (
+            <div className="p-10 border-2 border-dashed rounded-4xl text-center text-slate-400">
+              You haven&apos;t saved any favorites yet.
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {favorites.map((f) => (
+                <div key={f.id} className="group bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                  <div className="relative h-40">
+                    <Image src={f.image} alt={f.name} fill className="object-cover" />
+                    <button 
+                      onClick={() => handleRemoveFavorite(f.id)}
+                      className="absolute top-2 right-2 p-2 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <div className="p-4">
+                    <h4 className="font-bold text-slate-900 line-clamp-1">{f.name}</h4>
+                    <p className="text-[11px] text-slate-500 mb-3">{f.area}, {f.city}</p>
+                    <Button variant="outline" size="sm" asChild className="w-full rounded-lg text-xs h-8">
+                      <Link href={`/items/${f.id}`}>
+                        View Details <ArrowRight className="ml-1.5 h-3 w-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
       </section>
     </ProtectedRoute>
   );
 };
 
-export default MyListings;
+export default MyAccount;

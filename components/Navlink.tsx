@@ -20,6 +20,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/items", label: "Explore" },
   { href: "/about", label: "About" },
+  { href: "/city-guides", label: "City Guides" },
 ];
 
 const Navbar = () => {
@@ -46,7 +47,7 @@ const Navbar = () => {
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-600 transition-all group-hover:bg-amber-500 group-hover:text-white">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-200 text-[#d46535] transition-all group-hover:bg-[#d46535] group-hover:text-white">
             <Coffee className="h-5 w-5" />
           </span>
           <span className="font-serif text-xl font-bold tracking-tight">
@@ -61,7 +62,7 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               className={`text-sm font-medium transition-colors hover:text-amber-600 ${
-                isActive(link.href) ? "text-amber-600" : "text-slate-600"
+                isActive(link.href) ? "text-[#d46535]" : "text-slate-600"
               }`}
             >
               {link.label}
@@ -109,7 +110,7 @@ const Navbar = () => {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/login">Login</Link>
               </Button>
-              <Button size="sm" asChild className="bg-amber-500 text-white hover:bg-amber-600 shadow-sm">
+              <Button size="lg" asChild className="bg-[#d46535] text-white hover:bg-[#c0562c] shadow-sm">
                 <Link href="/register">Sign up</Link>
               </Button>
             </>
@@ -172,7 +173,7 @@ const Navbar = () => {
                   <Button variant="outline" size="lg" asChild>
                     <Link href="/login" onClick={() => setOpen(false)}>Login</Link>
                   </Button>
-                  <Button size="lg" className="bg-amber-500 text-white" asChild>
+                  <Button size="lg" className="bg-[#d46535] text-white" asChild>
                     <Link href="/register" onClick={() => setOpen(false)}>Sign up</Link>
                   </Button>
                 </div>
