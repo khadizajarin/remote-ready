@@ -1,6 +1,4 @@
 
-
-```markdown
 # ☕ Remote Ready – Find Your Perfect Workspace
 
 **Remote Ready** is a premium cafe-discovery platform designed for remote workers, digital nomads, and students. Built with **Next.js**, **Firebase**, and **Tailwind CSS**, it helps users find independent cafes with reliable Wi-Fi, manageable noise levels, and available power outlets.
@@ -111,4 +109,4 @@ service cloud.firestore {
 - **Developer:** Khadiza Jarin Roza
 - **Email:** khadiza131310@gmail.com
 - **LinkedIn:** [Khadiza Jarin Roza](https://www.linkedin.com/in/khadiza-jarin-roza/)
-```
+
