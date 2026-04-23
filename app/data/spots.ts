@@ -4,6 +4,13 @@ import spot3 from "@/public/spot-3.jpg";
 import spot4 from "@/public/spot-4.jpg";
 import spot5 from "@/public/spot-5.jpg";
 import spot6 from "@/public/spot-6.jpg";
+import spot7 from "@/public/spot-7.jpg";
+import spot8 from "@/public/spot-8.jpg";
+import spot9 from "@/public/spot-9.jpg";
+import spot10 from "@/public/spot-10.jpg";
+import spot11 from "@/public/spot-11.jpg";
+import spot12 from "@/public/spot-12.jpg";
+import spot13 from "@/public/spot-13.jpg";
 import { StaticImageData } from "next/image";
 
 export type Spot = {
@@ -133,5 +140,131 @@ export const spots: Spot[] = [
     price: "$$$",
     rating: 4.7,
     amenities: ["Free Wi-Fi", "Power outlets", "Pastries", "Quiet wing"],
+  },
+  {
+    id: "north-end-nook",
+    name: "North End Nook",
+    city: "Dhaka",
+    area: "Mohakhali",
+    image: spot7,
+    tagline: "Tiny espresso bar with a mezzanine made for laptops",
+    description:
+      "A four-seat counter downstairs and a hidden mezzanine upstairs lined with power outlets. Quiet, fast Wi-Fi, and a barista who remembers your order.",
+    wifi: "180 Mbps",
+    noise: "Quiet",
+    seating: 22,
+    outlets: "Plenty",
+    hours: "8:00 AM – 10:00 PM",
+    price: "$$",
+    rating: 4.6,
+    amenities: ["Free Wi-Fi", "Power outlets", "Quiet zone", "Specialty coffee"],
+  },
+  {
+    id: "paper-plane-cafe",
+    name: "Paper Plane Cafe",
+    city: "Dhaka",
+    area: "Bashundhara",
+    image: spot8,
+    tagline: "Bright, plant-filled, and built for long sessions",
+    description:
+      "Skylights, sturdy desks, and bottomless filter coffee. The back room turns into an unofficial coworking space most weekday afternoons.",
+    wifi: "160 Mbps",
+    noise: "Moderate",
+    seating: 50,
+    outlets: "Plenty",
+    hours: "8:30 AM – 11:00 PM",
+    price: "$$",
+    rating: 4.5,
+    amenities: ["Free Wi-Fi", "Power outlets", "Natural light", "All-day food"],
+  },
+  {
+    id: "old-town-grind",
+    name: "Old Town Grind",
+    city: "Dhaka",
+    area: "Old Dhaka",
+    image: spot9,
+    tagline: "Heritage building, slow brews, big windows",
+    description:
+      "Set inside a restored colonial-era house, this cafe pairs slow pour-overs with creaky wooden floors and tall arched windows over the river.",
+    wifi: "70 Mbps",
+    noise: "Quiet",
+    seating: 24,
+    outlets: "Some",
+    hours: "9:00 AM – 9:00 PM",
+    price: "$$",
+    rating: 4.7,
+    amenities: ["Free Wi-Fi", "Heritage building", "Quiet zone", "Tea selection"],
+  },
+  {
+    id: "harbor-house",
+    name: "Harbor House",
+    city: "Chattogram",
+    area: "Khulshi",
+    image: spot10,
+    tagline: "Rooftop with a sea breeze and string lights",
+    description:
+      "An open rooftop with low couches, a covered work nook, and a gentle breeze drifting in from the harbor. Best at golden hour.",
+    wifi: "90 Mbps",
+    noise: "Moderate",
+    seating: 38,
+    outlets: "Some",
+    hours: "10:00 AM – 12:00 AM",
+    price: "$$",
+    rating: 4.6,
+    amenities: ["Free Wi-Fi", "Outdoor seating", "Late hours", "Sea view"],
+  },
+  {
+    id: "the-tide-table",
+    name: "The Tide Table",
+    city: "Chattogram",
+    area: "GEC Circle",
+    image: spot11,
+    tagline: "Minimalist coffee bar in the heart of the city",
+    description:
+      "Concrete counters, single-origin espresso, and a long bench by the window perfect for a focused two-hour block between meetings.",
+    wifi: "140 Mbps",
+    noise: "Quiet",
+    seating: 20,
+    outlets: "Plenty",
+    hours: "8:00 AM – 10:00 PM",
+    price: "$$$",
+    rating: 4.8,
+    amenities: ["Free Wi-Fi", "Power outlets", "Specialty coffee", "Quiet zone"],
+  },
+  {
+    id: "rain-and-rosemary",
+    name: "Rain & Rosemary",
+    city: "Sylhet",
+    area: "Ambarkhana",
+    image: spot12,
+    tagline: "A herb garden, a fireplace, and the slowest mornings",
+    description:
+      "A converted bungalow with a small herb garden out front and a quiet reading room in the back. Cardamom lattes and homemade scones.",
+    wifi: "55 Mbps",
+    noise: "Quiet",
+    seating: 16,
+    outlets: "Some",
+    hours: "8:00 AM – 9:00 PM",
+    price: "$$",
+    rating: 4.8,
+    amenities: ["Free Wi-Fi", "Quiet zone", "Garden", "Pastries"],
+  },
+  {
+    id: "hilltop-haven",
+    name: "Hilltop Haven",
+    city: "Sylhet",
+    area: "Shahjalal Upashahar",
+    image: spot13,
+    tagline: "Wooden cabin vibes with valley views",
+    description:
+      "Built on a slope with floor-to-ceiling windows facing the tea hills. Long tables, warm lamps, and the kind of silence you can actually work in.",
+    wifi: "75 Mbps",
+    noise: "Quiet",
+    seating: 30,
+    outlets: "Plenty",
+    hours: "9:00 AM – 10:00 PM",
+    price: "$$",
+    rating: 4.9,
+    amenities: ["Free Wi-Fi", "Power outlets", "Valley view", "Quiet zone"],
   },
 ];
