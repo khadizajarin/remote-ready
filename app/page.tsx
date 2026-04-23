@@ -115,28 +115,56 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-muted/40 border-y border-border/60">
-        <div className="container  mx-auto py-20">
+     <section className="bg-muted/40 border-y border-border/60">
+        <div className="container mx-auto px-6 py-16 md:py-24">
+          {/* Header Section */}
           <div className="max-w-2xl mx-auto text-center">
-            <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">How it works</span>
-            <h2 className="mt-3 font-serif text-3xl md:text-4xl font-semibold text-balance">
+            <span className="text-xs uppercase tracking-[0.2em] text-amber-600 font-bold">
+              How it works
+            </span>
+            <h2 className="mt-4 font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-balance text-slate-900 leading-tight">
               From craving caffeine to deep work, in three steps.
             </h2>
           </div>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {/* Steps Grid */}
+          <div className="mt-16 grid gap-12 sm:grid-cols-2 md:grid-cols-3 md:gap-8 lg:gap-12">
             {[
-              { icon: Search, step: "01", title: "Search your city", body: "Browse curated cafes by city, vibe, or what you need to get done today." },
-              { icon: Bookmark, step: "02", title: "Pick your spot", body: "Check wifi speed, noise level, plug access, and real photos before you go." },
-              { icon: Coffee, step: "03", title: "Settle in & ship", body: "Order a flat white, open your laptop, and have your most productive afternoon." },
+              { 
+                icon: Search, 
+                step: "01", 
+                title: "Search your city", 
+                body: "Browse curated cafes by city, vibe, or what you need to get done today." 
+              },
+              { 
+                icon: Bookmark, 
+                step: "02", 
+                title: "Pick your spot", 
+                body: "Check wifi speed, noise level, plug access, and real photos before you go." 
+              },
+              { 
+                icon: Coffee, 
+                step: "03", 
+                title: "Settle in & ship", 
+                body: "Order a flat white, open your laptop, and have your most productive afternoon." 
+              },
             ].map((s) => (
-              <div key={s.step} className="relative">
-                <div className="font-serif text-5xl text-accent/20 font-semibold">{s.step}</div>
-                <div className="mt-3 h-12 w-12 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
-                  <s.icon className="h-5 w-5" />
+              <div key={s.step} className="relative flex flex-col items-center text-center md:items-start md:text-left animate-in fade-in slide-in-from-bottom-4 duration-500">
+                {/* Step Number Background */}
+               <div className="font-serif text-5xl text-accent/20 font-semibold">{s.step}</div>
+                
+                {/* Icon Box */}
+                <div className="relative z-10 mt-2 h-14 w-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shadow-sm">
+                  <s.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-5 font-serif text-xl font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+
+                {/* Text Content */}
+                <h3 className="mt-6 font-serif text-xl md:text-2xl font-bold text-slate-900">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-base text-slate-500 leading-relaxed max-w-70 md:max-w-none">
+                  {s.body}
+                </p>
               </div>
             ))}
           </div>

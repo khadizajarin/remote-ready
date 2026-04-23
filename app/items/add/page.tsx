@@ -188,7 +188,7 @@ const AddSpot = () => {
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="flex-1 h-14 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-md shadow-amber-200 transition-all active:scale-95"
+                className="lg:flex-1 h-14 px-8 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-md shadow-amber-200 transition-all active:scale-95"
               >
                 {loading ? "Submitting..." : <><MapPin className="h-5 w-5 mr-2" /> Submit Spot</>}
               </Button>
