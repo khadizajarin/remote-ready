@@ -7,7 +7,7 @@ import { Coffee, MapPin, ArrowRight, Compass, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { db } from "@/lib/firebase"; // নিশ্চিত হয়ে নাও তোমার ফায়ারবেস কনফিগ পাথ ঠিক আছে
+import { db } from "@/lib/firebase"; 
 import { collection, onSnapshot, query } from "firebase/firestore";
 
 type CityGuide = {
@@ -55,7 +55,6 @@ const CityGuides = () => {
   const [spots, setSpots] = useState<Spot[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Firestore থেকে ডেটা ফেচ করা
   useEffect(() => {
     const q = query(collection(db, "spots"));
     
@@ -160,6 +159,7 @@ const CityGuides = () => {
                           src={spot.image}
                           alt={spot.name}
                           fill
+                          sizes="600"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>

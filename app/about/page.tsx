@@ -40,7 +40,7 @@ const AboutPage = () => {
           <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-700 px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
             <Coffee className="h-3.5 w-3.5" /> Our story
           </span>
-          <h1 className="mt-6 font-serif text-4xl md:text-7xl font-bold leading-tight text-slate-900 tracking-tight">
+          <h1 className="mt-6 font-serif text-4xl md:text-6xl font-bold leading-tight text-slate-900 tracking-tight">
             A love letter to the cafes <br className="hidden md:block" /> 
             that <span className="text-amber-600 italic">hold us up.</span>
           </h1>

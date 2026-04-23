@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search, SlidersHorizontal, Coffee, Loader2 } from "lucide-react";
+import { Search, SlidersHorizontal, Coffee, Loader2, CircleDollarSign } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SpotCard from "@/components/SpotCard";
@@ -26,7 +26,7 @@ const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("All");
-
+  const [selectedPrice, setSelectedPrice] = useState("All"); // দ্বিতীয় ফিল্টার স্টেট
 
   useEffect(() => {
     const q = query(collection(db, "spots"));
@@ -46,23 +46,33 @@ const ExplorePage = () => {
     return () => unsubscribe();
   }, []);
 
+
   const cities = useMemo(() => {
     const uniqueCities = Array.from(new Set(spots.map((s) => s.city)));
     return ["All", ...uniqueCities.sort()];
   }, [spots]);
 
+
+  const priceLevels = useMemo(() => {
+    const uniquePrices = Array.from(new Set(spots.map((s) => s.price)));
+    return ["All", ...uniquePrices.sort()];
+  }, [spots]);
+
+
   const filtered = useMemo(() => {
     return spots.filter((s) => {
       const matchesCity = selectedCity === "All" || s.city === selectedCity;
+      const matchesPrice = selectedPrice === "All" || s.price === selectedPrice;
       const q = searchQuery.trim().toLowerCase();
       const matchesQuery =
         !q ||
         s.name?.toLowerCase().includes(q) ||
         s.area?.toLowerCase().includes(q) ||
         s.tagline?.toLowerCase().includes(q);
-      return matchesCity && matchesQuery;
+      
+      return matchesCity && matchesPrice && matchesQuery;
     });
-  }, [searchQuery, selectedCity, spots]);
+  }, [searchQuery, selectedCity, selectedPrice, spots]);
 
   if (loading) {
     return (
@@ -93,36 +103,63 @@ const ExplorePage = () => {
         </div>
 
         {/* Filters & Search */}
-        <div className="mt-12 flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
-          <div className="relative flex-1 group">
+        <div className="mt-12 flex flex-col gap-6">
+          <div className="relative group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-amber-600 transition-colors" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, area, or vibe…"
-              className="pl-12 h-14 bg-white border-slate-200 rounded-xl shadow-sm focus:ring-amber-500 focus:border-amber-500 text-base"
+              className="pl-12 h-14 bg-white border-slate-200 rounded-xl shadow-sm focus:ring-amber-500 focus:border-amber-500 text-base w-full"
             />
           </div>
           
-          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-2 px-1">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 shrink-0">
-               <SlidersHorizontal className="h-4 w-4" />
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+            {/* City Filter */}
+            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-2 w-full md:w-auto">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 shrink-0">
+                 <SlidersHorizontal className="h-4 w-4" />
+              </div>
+              {cities.map((c) => (
+                <Button
+                  key={c}
+                  size="sm"
+                  variant={selectedCity === c ? "default" : "outline"}
+                  onClick={() => setSelectedCity(c)}
+                  className={`rounded-full px-6 h-10 transition-all whitespace-nowrap ${
+                    selectedCity === c 
+                      ? "bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200" 
+                      : "bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50"
+                  }`}
+                >
+                  {c}
+                </Button>
+              ))}
             </div>
-            {cities.map((c) => (
-              <Button
-                key={c}
-                size="sm"
-                variant={selectedCity === c ? "default" : "outline"}
-                onClick={() => setSelectedCity(c)}
-                className={`rounded-full px-6 h-10 transition-all whitespace-nowrap ${
-                  selectedCity === c 
-                    ? "bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200" 
-                    : "bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50"
-                }`}
-              >
-                {c}
-              </Button>
-            ))}
+
+            <div className="hidden md:block h-6 w-px bg-slate-200 mx-2" />
+
+            {/* Price Filter (New Second Filter) */}
+            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-2 w-full md:w-auto">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-500 shrink-0">
+                <CircleDollarSign className="h-4 w-4" />
+              </div>
+              {priceLevels.map((p, index) => ( // এখানে index যোগ করা হয়েছে
+                <Button
+                  key={`price-level-${p}-${index}`} // ইউনিক কি নিশ্চিত করতে প্রিফিক্স এবং ইনডেক্স ব্যবহার
+                  size="sm"
+                  variant={selectedPrice === p ? "secondary" : "outline"}
+                  onClick={() => setSelectedPrice(p)}
+                  className={`rounded-full px-6 h-10 transition-all whitespace-nowrap ${
+                    selectedPrice === p 
+                      ? "bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200" 
+                      : "bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50"
+                  }`}
+                >
+                  {p}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -145,11 +182,11 @@ const ExplorePage = () => {
             </div>
             <h3 className="text-xl font-bold text-slate-900">No spots found</h3>
             <p className="mt-2 text-slate-500 max-w-xs">
-              We couldn&apos;t find anything matching &quot;{searchQuery}&quot;. Maybe try a different city or keyword?
+              Try a different city, price level, or keyword?
             </p>
             <Button 
               variant="link" 
-              onClick={() => {setSearchQuery(""); setSelectedCity("All");}}
+              onClick={() => {setSearchQuery(""); setSelectedCity("All"); setSelectedPrice("All");}}
               className="mt-4 text-amber-600 font-semibold"
             >
               Clear all filters

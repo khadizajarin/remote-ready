@@ -105,7 +105,7 @@ const MyAccount = () => {
         <div className="flex items-end justify-between gap-4 flex-wrap animate-in fade-in slide-in-from-bottom-4 duration-700 mb-10">
           <div>
             <span className="text-xs uppercase tracking-[0.2em] text-amber-600 font-bold">Manage</span>
-            <h1 className="mt-3 font-serif text-4xl md:text-5xl font-bold text-slate-900">Cafes you&apos;ve shared</h1>
+            <h1 className="mt-3 font-serif text-4xl md:text-6xl font-bold text-slate-900">Cafes  <span className="text-amber-600 italic">you&apos;ve</span> shared</h1>
             <p className="mt-2 text-slate-500 text-lg">Manage your contributed spots.</p>
           </div>
           <Button asChild className="bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200 rounded-xl px-6 h-12">
@@ -206,7 +206,7 @@ const MyAccount = () => {
               {favorites.map((f) => (
                 <div key={f.id} className="group bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-md transition-all">
                   <div className="relative h-40">
-                    <Image src={f.image} alt={f.name} fill className="object-cover" />
+                    <Image src={f.image} alt={f.name} fill  sizes="600" className="object-cover" />
                     <button 
                       onClick={() => handleRemoveFavorite(f.id)}
                       className="absolute top-2 right-2 p-2 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"

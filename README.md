@@ -1,4 +1,6 @@
 
+
+```markdown
 # ☕ Remote Ready – Find Your Perfect Workspace
 
 **Remote Ready** is a premium cafe-discovery platform designed for remote workers, digital nomads, and students. Built with **Next.js**, **Firebase**, and **Tailwind CSS**, it helps users find independent cafes with reliable Wi-Fi, manageable noise levels, and available power outlets.
@@ -15,13 +17,14 @@
 ## ✨ Key Features
 
 - **📍 Smart Discovery:** Browse curated cafes filtered by city (Dhaka, Chattogram, Sylhet) and vibe.
-- **📊 Real-time Stats:** Every spot features data on Wi-Fi speed, noise level, and outlet availability.
+- **🔍 Real-time Search:** Instantly search by cafe name, area, or vibe.
+- **📊 Advanced Filtering:** Filter spots by **City** and **Price Range** (Multiple field filtering) to find the perfect workspace match.
 - **🔐 Secure Authentication:** Email/Password & Google Login using **Firebase Auth**.
+- **✍️ Community Contributions:** Users can contribute new cafe finds via a protected form featuring **Inline Form Validation**.
 - **❤️ Personal Favorites:** Logged-in users can bookmark spots to their personal collection.
-- **✍️ Add Spots:** Users can contribute by adding new cafe finds via a protected form.
 - **🛠️ Management Dashboard:** Manage your added listings and favorites in one place.
 - **📱 Fully Responsive:** Seamless experience across Mobile, Tablet, and Desktop.
-- **⚡ Performance First:** Server-side metadata and client-side real-time Firestore updates.
+- **⚡ Real-time Updates:** Powered by **Firestore onSnapshot** for live data synchronization without page refresh.
 
 ---
 
@@ -41,13 +44,13 @@
 
 ## 🗺️ Route Summary
 
-- `/` : Landing page with featured sections and how-it-works.
-- `/items` : Explore all cafes with Search and City filtering.
-- `/items/[id]` : Dynamic route showing detailed info, amenities, and related spots.
-- `/about` : Story and mission behind the platform.
-- `/login` & `/register` : Firebase authentication pages.
-- `/items/add` : **[Protected]** Form to contribute a new cafe spot.
-- `/items/manage` : **[Protected]** Dashboard to view and delete your listings.
+| Route | Access | Description |
+| :--- | :--- | :--- |
+| `/` | Public | Landing page with featured sections and how-it-works. |
+| `/items` | Public | Explore all cafes with Search, City, and Price filtering. |
+| `/items/[id]` | Public | Dynamic route showing detailed info and related spots. |
+| `/items/add` | **Private** | Protected form to contribute a new cafe spot. |
+| `/items/manage` | **Private** | Dashboard to view and delete your own listings. |
 
 ---
 
@@ -107,6 +110,5 @@ service cloud.firestore {
 ## 🤝 Contact
 - **Developer:** Khadiza Jarin Roza
 - **Email:** khadiza131310@gmail.com
-- **LinkedIn:** [Khadiza Jarin Roza](https://https://www.linkedin.com/in/khadiza-jarin-roza/)
-
-
+- **LinkedIn:** [Khadiza Jarin Roza](https://www.linkedin.com/in/khadiza-jarin-roza/)
+```

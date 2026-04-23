@@ -18,8 +18,8 @@ import {
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/items", label: "Explore" },
   { href: "/about", label: "About" },
+  { href: "/items", label: "Explore" },
   { href: "/city-guides", label: "City Guides" },
 ];
 

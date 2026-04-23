@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ImagePlus, MapPin } from "lucide-react";
+import { ImagePlus, MapPin, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,11 +13,13 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 
-
 const AddSpot = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  
+  // ১. এরর স্টেট ম্যানেজমেন্ট
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const initialState = {
     name: "",
@@ -31,6 +33,19 @@ const AddSpot = () => {
 
   const [form, setForm] = useState(initialState);
 
+  // ২. ভ্যালিডেশন লজিক
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim()) newErrors.name = "Cafe name is required";
+    if (!form.city.trim()) newErrors.city = "City is required";
+    if (!form.tagline.trim()) newErrors.tagline = "Tagline is required";
+    if (form.description.length > 0 && form.description.length < 20) {
+      newErrors.description = "Description should be at least 20 characters";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -40,8 +55,9 @@ const AddSpot = () => {
       return;
     }
 
-    if (!form.name || !form.city || !form.tagline) {
-      toast.error("Name, city and tagline are required");
+    // ভ্যালিডেশন চেক
+    if (!validateForm()) {
+      toast.error("Please fix the errors in the form");
       return;
     }
 
@@ -58,15 +74,12 @@ const AddSpot = () => {
         noise: "Moderate",
         outlets: "Some",
         amenities: ["Free Wi-Fi", "Quiet zone"],
+        random: Math.random(), // র‍্যান্ডমলি ডিসপ্লে করার জন্য
       });
 
       toast.success("Spot submitted! Thanks for sharing ☕");
-
-      // ২. এখানে ফর্ম রিসেট করা হচ্ছে
       setForm(initialState); 
-
-      // যদি চাও সাবমিট হওয়ার পর ইউজারকে অটোমেটিক অন্য পেজে নিয়ে যাবে, তবে নিচের লাইনটি আনকমেন্ট করো
-      // router.push("/my-listings");
+      router.push("/items");
 
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -83,42 +96,47 @@ const AddSpot = () => {
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="text-xs uppercase tracking-[0.2em] text-amber-600 font-bold">Add a spot</span>
             <h1 className="mt-3 font-serif text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
-              Share your favourite <span className="text-amber-600">cafe</span>
+              Share your favourite <span className="text-amber-600 italic">cafe</span>
             </h1>
-            <p className="mt-4 text-slate-500 text-lg">
-              Tell the community about a place you love working from. The more detail, the better.
-            </p>
           </div>
 
           <form 
             onSubmit={handleSubmit} 
-            className="mt-10 rounded-3xl bg-card border border-border shadow-cozy p-8 space-y-6 animate-in fade-in zoom-in-95 duration-500"
+            className="mt-10 rounded-3xl bg-card border border-border shadow-cozy p-8 space-y-6"
           >
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="name" className="font-semibold text-slate-700">Cafe name</Label>
+                <Label htmlFor="name" className={`font-semibold ${errors.name ? 'text-rose-500' : 'text-slate-700'}`}>Cafe name *</Label>
                 <Input 
                   id="name" 
                   placeholder="The Roastery" 
                   value={form.name} 
-                  onChange={(e) => setForm({ ...form, name: e.target.value })} 
-                  className="h-12 bg-slate-50/50"
-                  required
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                    if (errors.name) setErrors({...errors, name: ""});
+                  }} 
+                  className={`h-12 bg-slate-50/50 ${errors.name ? 'border-rose-500 focus-visible:ring-rose-500' : ''}`}
                 />
+                {errors.name && <p className="text-xs font-medium text-rose-500 animate-in fade-in slide-in-from-top-1">{errors.name}</p>}
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="city" className="font-semibold text-slate-700">City</Label>
+                <Label htmlFor="city" className={`font-semibold ${errors.city ? 'text-rose-500' : 'text-slate-700'}`}>City *</Label>
                 <Input 
                   id="city" 
                   placeholder="Dhaka" 
                   value={form.city} 
-                  onChange={(e) => setForm({ ...form, city: e.target.value })} 
-                  className="h-12 bg-slate-50/50"
-                  required
+                  onChange={(e) => {
+                    setForm({ ...form, city: e.target.value });
+                    if (errors.city) setErrors({...errors, city: ""});
+                  }} 
+                  className={`h-12 bg-slate-50/50 ${errors.city ? 'border-rose-500 focus-visible:ring-rose-500' : ''}`}
                 />
+                {errors.city && <p className="text-xs font-medium text-rose-500 animate-in fade-in slide-in-from-top-1">{errors.city}</p>}
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="area" className="font-semibold text-slate-700">Area / Neighbourhood</Label>
+                <Label htmlFor="area" className="font-semibold text-slate-700">Area</Label>
                 <Input 
                   id="area" 
                   placeholder="Gulshan 2" 
@@ -130,15 +148,18 @@ const AddSpot = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="tagline" className="font-semibold text-slate-700">Tagline</Label>
+              <Label htmlFor="tagline" className={`font-semibold ${errors.tagline ? 'text-rose-500' : 'text-slate-700'}`}>Tagline *</Label>
               <Input 
                 id="tagline" 
                 placeholder="A quiet corner with the best pour-over in town" 
                 value={form.tagline} 
-                onChange={(e) => setForm({ ...form, tagline: e.target.value })} 
-                className="h-12 bg-slate-50/50"
-                required
+                onChange={(e) => {
+                  setForm({ ...form, tagline: e.target.value });
+                  if (errors.tagline) setErrors({...errors, tagline: ""});
+                }} 
+                className={`h-12 bg-slate-50/50 ${errors.tagline ? 'border-rose-500 focus-visible:ring-rose-500' : ''}`}
               />
+              {errors.tagline && <p className="text-xs font-medium text-rose-500 animate-in fade-in slide-in-from-top-1">{errors.tagline}</p>}
             </div>
 
             <div className="space-y-2">
@@ -151,6 +172,7 @@ const AddSpot = () => {
                 onChange={(e) => setForm({ ...form, description: e.target.value })} 
                 className="bg-slate-50/50 resize-none"
               />
+              {errors.description && <p className="text-xs font-medium text-rose-500">{errors.description}</p>}
             </div>
 
             <div className="grid sm:grid-cols-2 gap-6">
@@ -180,8 +202,8 @@ const AddSpot = () => {
               <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform">
                 <ImagePlus className="h-6 w-6 text-amber-600" />
               </div>
-              <div className="text-sm text-slate-500 max-w-xs">
-                Photo upload coming soon. For now, we&apos;ll use a <span className="font-bold text-slate-700">cozy cafe placeholder</span> for you.
+              <div className="text-sm text-slate-500">
+                Photo upload coming soon. Using a <span className="font-bold text-slate-700">placeholder</span> for now.
               </div>
             </div>
 
@@ -189,9 +211,9 @@ const AddSpot = () => {
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="lg:flex-1 h-14 px-8 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-md shadow-amber-200 transition-all active:scale-95"
+                className="lg:flex-1 h-14 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-md transition-all active:scale-95"
               >
-                {loading ? "Submitting..." : <><MapPin className="h-5 w-5 mr-2" /> Submit Spot</>}
+                {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <><MapPin className="h-5 w-5 mr-2" /> Submit Spot</>}
               </Button>
               <Button 
                 type="button" 
