@@ -2,13 +2,13 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ImagePlus, MapPin, Coffee } from "lucide-react";
+import { ImagePlus, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/app/context/AuthContext";
-import { db } from "@/lib/firebase"; // Firebase config theke db import koro
+import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import ProtectedRoute from "../../../components/ProtectedRoute";
@@ -18,7 +18,8 @@ const AddSpot = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const [form, setForm] = useState({
+  // ১. প্রাথমিক স্টেট আলাদা করে রাখা
+  const initialState = {
     name: "",
     city: "",
     area: "",
@@ -26,7 +27,9 @@ const AddSpot = () => {
     description: "",
     wifi: "",
     hours: "",
-  });
+  };
+
+  const [form, setForm] = useState(initialState);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -57,7 +60,13 @@ const AddSpot = () => {
       });
 
       toast.success("Spot submitted! Thanks for sharing ☕");
-      // router.push("/explore");
+
+      // ২. এখানে ফর্ম রিসেট করা হচ্ছে
+      setForm(initialState); 
+
+      // যদি চাও সাবমিট হওয়ার পর ইউজারকে অটোমেটিক অন্য পেজে নিয়ে যাবে, তবে নিচের লাইনটি আনকমেন্ট করো
+      // router.push("/my-listings");
+
     } catch (error) {
       console.error("Error adding document: ", error);
       toast.error("Something went wrong. Please try again.");
@@ -93,6 +102,7 @@ const AddSpot = () => {
                   value={form.name} 
                   onChange={(e) => setForm({ ...form, name: e.target.value })} 
                   className="h-12 bg-slate-50/50"
+                  required
                 />
               </div>
               <div className="space-y-2">
@@ -103,6 +113,7 @@ const AddSpot = () => {
                   value={form.city} 
                   onChange={(e) => setForm({ ...form, city: e.target.value })} 
                   className="h-12 bg-slate-50/50"
+                  required
                 />
               </div>
               <div className="space-y-2">
@@ -125,6 +136,7 @@ const AddSpot = () => {
                 value={form.tagline} 
                 onChange={(e) => setForm({ ...form, tagline: e.target.value })} 
                 className="h-12 bg-slate-50/50"
+                required
               />
             </div>
 
@@ -163,7 +175,6 @@ const AddSpot = () => {
               </div>
             </div>
 
-            {/* Upload Placeholder */}
             <div className="rounded-2xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center gap-3 bg-secondary/10 group hover:border-amber-400 transition-colors">
               <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform">
                 <ImagePlus className="h-6 w-6 text-amber-600" />
@@ -179,13 +190,7 @@ const AddSpot = () => {
                 disabled={loading}
                 className="flex-1 h-14 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-md shadow-amber-200 transition-all active:scale-95"
               >
-                {loading ? (
-                  "Submitting..."
-                ) : (
-                  <>
-                    <MapPin className="h-5 w-5 mr-2" /> Submit Spot
-                  </>
-                )}
+                {loading ? "Submitting..." : <><MapPin className="h-5 w-5 mr-2" /> Submit Spot</>}
               </Button>
               <Button 
                 type="button" 

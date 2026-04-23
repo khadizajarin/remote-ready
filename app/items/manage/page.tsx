@@ -93,7 +93,7 @@ const MyListings = () => {
             <p className="mt-2 text-slate-500 text-lg">Manage your contributed spots.</p>
           </div>
           <Button asChild className="bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200 rounded-xl px-6 h-12">
-            <Link href="/add"><Plus className="h-4 w-4 mr-1.5" /> Add new spot</Link>
+            <Link href="/items/add"><Plus className="h-4 w-4 mr-1.5" /> Add new spot</Link>
           </Button>
         </div>
 
@@ -104,7 +104,7 @@ const MyListings = () => {
             </div>
             <h2 className="mt-6 font-serif text-2xl font-bold text-slate-900">No shared spots yet</h2>
             <Button asChild className="mt-8 bg-amber-600 text-white hover:bg-amber-700 h-12 px-8 rounded-xl">
-              <Link href="/add">Add your first spot</Link>
+              <Link href="/items/add">Add your first spot</Link>
             </Button>
           </div>
         ) : (
@@ -120,6 +120,7 @@ const MyListings = () => {
                     src={l.image || "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1000"} 
                     alt={l.name}
                     fill
+                    sizes="600"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute top-4 right-4">

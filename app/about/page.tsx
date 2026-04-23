@@ -3,6 +3,7 @@
 import { Coffee, Heart, Leaf, Users } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/app/context/AuthContext"; // AuthContext import করা হলো
 
 const values = [
   { 
@@ -29,6 +30,8 @@ const values = [
 ];
 
 const AboutPage = () => {
+  const { user, loading } = useAuth(); 
+
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
@@ -55,7 +58,7 @@ const AboutPage = () => {
           {values.map((v) => (
             <div 
               key={v.title} 
-              className="group rounded-3xl bg-white p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group rounded-3xl bg-[#fcfaf8] p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className={`h-14 w-14 rounded-2xl ${v.bg} ${v.color} flex items-center justify-center transition-transform group-hover:scale-110`}>
                 <v.icon className="h-6 w-6" />
@@ -69,7 +72,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* CTA Section - Color Restored to Warm/Secondary */}
+      {/* CTA Section */}
       <section className="container mx-auto px-4 py-24">
         <div className="rounded-[3rem] bg-[#f0e9e0] p-10 md:p-20 text-center relative overflow-hidden">
           {/* Decorative Background Element */}
@@ -86,9 +89,12 @@ const AboutPage = () => {
               <Button asChild size="lg" className="bg-amber-600 text-white hover:bg-amber-700 h-14 px-8 rounded-xl text-base font-bold transition-all">
                 <Link href="/explore">Browse all spots</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-slate-200 bg-white text-slate-900 hover:bg-slate-50 h-14 px-8 rounded-xl text-base font-bold transition-all">
-                <Link href="/signup">Join the community</Link>
-              </Button>
+
+              {!loading && !user && (
+                <Button asChild size="lg" variant="outline" className="border-slate-200 bg-white text-slate-900 hover:bg-slate-50 h-14 px-8 rounded-xl text-base font-bold transition-all">
+                  <Link href="/register">Join the community</Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>

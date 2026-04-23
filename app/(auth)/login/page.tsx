@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Coffee } from "lucide-react";
+import { Coffee, Eye, EyeOff } from "lucide-react"; // Eye icons import kora hoyeche
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,11 +15,11 @@ const Login = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-
   const from = searchParams.get("from") || "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Eye icon er state
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -32,14 +32,13 @@ const Login = () => {
 
     try {
       setLoading(true);
-      await login(email, password); // Firebase login call
+      await login(email, password); 
       toast.success("Welcome back! Brewing your experience...");
       router.push(from);
-      router.refresh(); // Auth state update confirm korte
+      router.refresh(); 
     } catch (error: any) {
       console.error(error);
-      // Firebase specific error handling
-      if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+      if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
         toast.error("Invalid email or password");
       } else {
         toast.error("Something went wrong. Please try again.");
@@ -82,15 +81,30 @@ const Login = () => {
               <Label htmlFor="password">Password</Label>
               <Link href="#" className="text-xs text-amber-600 hover:underline">Forgot password?</Link>
             </div>
-            <Input 
-              id="password" 
-              type="password" 
-              placeholder="••••••••" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 bg-slate-50/50 border-slate-200 focus:ring-amber-500"
-              required
-            />
+            
+            {/* Password Field with Eye Icon */}
+            <div className="relative">
+              <Input 
+                id="password" 
+                type={showPassword ? "text" : "password"} // Dynamic type change
+                placeholder="••••••••" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-12 bg-slate-50/50 border-slate-200 focus:ring-amber-500 pr-10" // pr-10 jate icon er upore text na jay
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <Button 

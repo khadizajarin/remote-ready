@@ -82,7 +82,7 @@ export default function HomePage() {
             { icon: Users, title: "Vibe & noise", body: "We tell you if it's a quiet library hush or a buzzing brunch crowd before you go." },
             { icon: Coffee, title: "Worth the cup", body: "Only spots with coffee good enough to keep you ordering through the afternoon." },
           ].map((f) => (
-            <div key={f.title} className="rounded-2xl bg-white p-7 border border-slate-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
+            <div key={f.title} className="rounded-2xl bg-[#fcfaf8] p-7 border border-slate-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
               <div className="h-12 w-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
                 <f.icon className="h-5 w-5" />
               </div>

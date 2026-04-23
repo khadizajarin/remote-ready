@@ -3,11 +3,11 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Coffee } from "lucide-react";
+import { Coffee, Eye, EyeOff } from "lucide-react"; // Eye icons import kora hoyeche
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/app/context/AuthContext"; // Path ensure koro
+import { useAuth } from "@/app/context/AuthContext"; 
 import { toast } from "react-hot-toast";
 
 const Signup = () => {
@@ -17,12 +17,12 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Password visibility state
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Basic Validation
     if (!name || !email || !password) {
       toast.error("Please fill in all fields");
       return;
@@ -34,7 +34,6 @@ const Signup = () => {
 
     try {
       setLoading(true);
-      // AuthContext theke register function call
       await register(name, email, password);
       
       toast.success("Welcome to Remote Ready! Account created.");
@@ -68,7 +67,7 @@ const Signup = () => {
           className="mt-10 rounded-3xl bg-card border border-border shadow-cozy p-8 space-y-5 animate-in fade-in zoom-in-95 duration-500"
         >
           <div className="space-y-2">
-            <Label htmlFor="name">Full name</Label>
+            <Label htmlFor="name" className="text-slate-700 font-medium">Full name</Label>
             <Input 
               id="name" 
               placeholder="Aiman Hossain" 
@@ -80,7 +79,7 @@ const Signup = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-slate-700 font-medium">Email</Label>
             <Input 
               id="email" 
               type="email" 
@@ -93,16 +92,29 @@ const Signup = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input 
-              id="password" 
-              type="password" 
-              placeholder="At least 6 characters" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 bg-slate-50/50 border-slate-200 focus:ring-amber-500"
-              required
-            />
+            <Label htmlFor="password text-slate-700 font-medium">Password</Label>
+            <div className="relative">
+              <Input 
+                id="password" 
+                type={showPassword ? "text" : "password"} 
+                placeholder="At least 6 characters" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-12 bg-slate-50/50 border-slate-200 focus:ring-amber-500 pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <Button 
