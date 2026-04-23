@@ -1,12 +1,14 @@
 "use client";
 
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Coffee, MapPin, ArrowRight, Compass } from "lucide-react";
+import { Coffee, MapPin, ArrowRight, Compass, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { spots } from "@/app/data/spots"; 
+import { db } from "@/lib/firebase"; // নিশ্চিত হয়ে নাও তোমার ফায়ারবেস কনফিগ পাথ ঠিক আছে
+import { collection, onSnapshot, query } from "firebase/firestore";
 
 type CityGuide = {
   city: string;
@@ -14,6 +16,18 @@ type CityGuide = {
   vibe: string;
   bestFor: string;
   neighborhoodTip: string;
+};
+
+type Spot = {
+  id: string;
+  city: string;
+  name: string;
+  image: string;
+  price: string;
+  area: string;
+  tagline: string;
+  noise: string;
+  outlets: number;
 };
 
 const cityMeta: Record<string, Omit<CityGuide, "city">> = {
@@ -38,8 +52,39 @@ const cityMeta: Record<string, Omit<CityGuide, "city">> = {
 };
 
 const CityGuides = () => {
+  const [spots, setSpots] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const cities = Array.from(new Set(spots.map((s) => s.city))).sort();
+  // Firestore থেকে ডেটা ফেচ করা
+  useEffect(() => {
+    const q = query(collection(db, "spots"));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const fetchedSpots = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Spot[];
+      setSpots(fetchedSpots);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching spots:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const cities = useMemo(() => {
+    return Array.from(new Set(spots.map((s) => s.city))).sort();
+  }, [spots]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <Loader2 className="h-10 w-10 animate-spin text-amber-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background min-h-screen">
@@ -110,7 +155,7 @@ const CityGuides = () => {
                 {citySpots.map((spot) => (
                   <Link key={spot.id} href={`/items/${spot.id}`} className="group">
                     <Card className="overflow-hidden h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-slate-100 rounded-3xl pt-0">
-                      <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
+                      <div className="relative aspect-video overflow-hidden bg-slate-100">
                         <Image
                           src={spot.image}
                           alt={spot.name}
@@ -123,7 +168,7 @@ const CityGuides = () => {
                           <h3 className="font-serif text-xl font-bold text-slate-900 leading-tight group-hover:text-amber-600 transition-colors">
                             {spot.name}
                           </h3>
-                          <Badge variant="secondary" className="bg-slate-100 text-slate-600 border-none">
+                          <Badge variant="secondary" className="bg-[#d46535] text-white border-none">
                             {spot.price}
                           </Badge>
                         </div>

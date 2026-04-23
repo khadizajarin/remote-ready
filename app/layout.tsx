@@ -54,7 +54,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  // Twitter (X)
   twitter: {
     card: "summary_large_image",
     title: "Remote Ready",
@@ -62,7 +61,6 @@ export const metadata: Metadata = {
     images: ["/og-image.png"], 
   },
 
-  // Favicons
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.png",

@@ -1,30 +1,77 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Search, SlidersHorizontal, Coffee } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, SlidersHorizontal, Coffee, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SpotCard from "@/components/SpotCard";
-import { spots } from "@/app/data/spots";
+import { db } from "@/lib/firebase"; 
+import { collection, onSnapshot, query } from "firebase/firestore";
 
-const cities = ["All", ...Array.from(new Set(spots.map((s) => s.city)))];
+interface Spot {
+  id: string;
+  city: string;
+  name: string;
+  area: string;
+  tagline: string;
+  image: string;
+  rating: number;
+  price: string;
+  wifi: string;
+  [key: string]: unknown;
+}
 
 const ExplorePage = () => {
-  const [query, setQuery] = useState("");
-  const [city, setCity] = useState("All");
+  const [spots, setSpots] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCity, setSelectedCity] = useState("All");
+
+
+  useEffect(() => {
+    const q = query(collection(db, "spots"));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const fetchedSpots = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Spot[];
+      setSpots(fetchedSpots);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching spots:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const cities = useMemo(() => {
+    const uniqueCities = Array.from(new Set(spots.map((s) => s.city)));
+    return ["All", ...uniqueCities.sort()];
+  }, [spots]);
 
   const filtered = useMemo(() => {
     return spots.filter((s) => {
-      const matchesCity = city === "All" || s.city === city;
-      const q = query.trim().toLowerCase();
+      const matchesCity = selectedCity === "All" || s.city === selectedCity;
+      const q = searchQuery.trim().toLowerCase();
       const matchesQuery =
         !q ||
-        s.name.toLowerCase().includes(q) ||
-        s.area.toLowerCase().includes(q) ||
-        s.tagline.toLowerCase().includes(q);
+        s.name?.toLowerCase().includes(q) ||
+        s.area?.toLowerCase().includes(q) ||
+        s.tagline?.toLowerCase().includes(q);
       return matchesCity && matchesQuery;
     });
-  }, [query, city]);
+  }, [searchQuery, selectedCity, spots]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <Loader2 className="h-10 w-10 animate-spin text-amber-600" />
+        <p className="mt-4 text-slate-500 animate-pulse">Finding the best cafes...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,8 +97,8 @@ const ExplorePage = () => {
           <div className="relative flex-1 group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-amber-600 transition-colors" />
             <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, area, or vibe…"
               className="pl-12 h-14 bg-white border-slate-200 rounded-xl shadow-sm focus:ring-amber-500 focus:border-amber-500 text-base"
             />
@@ -65,10 +112,10 @@ const ExplorePage = () => {
               <Button
                 key={c}
                 size="sm"
-                variant={city === c ? "default" : "outline"}
-                onClick={() => setCity(c)}
+                variant={selectedCity === c ? "default" : "outline"}
+                onClick={() => setSelectedCity(c)}
                 className={`rounded-full px-6 h-10 transition-all whitespace-nowrap ${
-                  city === c 
+                  selectedCity === c 
                     ? "bg-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-200" 
                     : "bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50"
                 }`}
@@ -98,11 +145,11 @@ const ExplorePage = () => {
             </div>
             <h3 className="text-xl font-bold text-slate-900">No spots found</h3>
             <p className="mt-2 text-slate-500 max-w-xs">
-              We couldn&apos;t find anything matching &quot;{query}&quot;. Maybe try a different city or keyword?
+              We couldn&apos;t find anything matching &quot;{searchQuery}&quot;. Maybe try a different city or keyword?
             </p>
             <Button 
               variant="link" 
-              onClick={() => {setQuery(""); setCity("All");}}
+              onClick={() => {setSearchQuery(""); setSelectedCity("All");}}
               className="mt-4 text-amber-600 font-semibold"
             >
               Clear all filters

@@ -1,14 +1,58 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Coffee, MapPin, Sparkles, Wifi, Users, Quote, Search, Bookmark } from "lucide-react";
 import heroImg from "@/public/hero-cafe.jpg";
 import { Button } from "../components/ui/button";
-import { spots } from "./data/spots";
+import { useEffect, useState } from "react";
+import { db } from "@/lib/firebase"; 
+import { collection, query, onSnapshot } from "firebase/firestore";
 import SpotCard from "../components/SpotCard";
+import { Loader2 } from "lucide-react";
 
+
+interface Spot {
+  id: string;
+  name: string;
+  image: string;
+  rating: number;
+  price: string;
+  wifi: string;
+  noise: string;
+  plugs: boolean;
+  tagline: string;
+  area: string;
+  city: string;
+  [key: string]: unknown;
+}
 
 export default function HomePage() {
-  const featured = spots.slice(0, 3);
+
+
+  const [featuredSpots, setFeaturedSpots] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, "spots"));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const allData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Spot[];
+
+      // Shuffle and pick 3
+      const shuffled = allData.sort(() => 0.5 - Math.random());
+      setFeaturedSpots(shuffled.slice(0, 3));
+      
+      setLoading(false);
+    }, (error) => {
+      console.error(error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
@@ -107,11 +151,17 @@ export default function HomePage() {
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((s) => (
-            <SpotCard key={s.id} spot={s} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredSpots.map((s) => (
+              <SpotCard key={s.id} spot={s} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* How it works */}

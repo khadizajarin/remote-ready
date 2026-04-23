@@ -13,12 +13,12 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import ProtectedRoute from "../../../components/ProtectedRoute";
 
+
 const AddSpot = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // ১. প্রাথমিক স্টেট আলাদা করে রাখা
   const initialState = {
     name: "",
     city: "",
@@ -30,6 +30,7 @@ const AddSpot = () => {
   };
 
   const [form, setForm] = useState(initialState);
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

@@ -1,183 +1,107 @@
-// "use client";
-
-// import Link from "next/link";
-// import Image from "next/image";
-// import { useParams } from "next/navigation";
-// import { ArrowLeft, Clock, MapPin, Plug, Star, Users, Volume2, Wifi } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-// import { spots } from "@/app/data/spots"; 
-
-// const SpotDetails = () => {
-//   const params = useParams();
-//   const id = params?.id;
-
-//   const spot = spots.find((s) => s.id === id);
-
-//   if (!spot) {
-//     return (
-//       <div className="container py-24 text-center">
-//         <h1 className="font-serif text-3xl font-semibold text-slate-900">Spot not found</h1>
-//         <p className="mt-3 text-muted-foreground">We couldn&apos;t find that cafe.</p>
-//         <Button asChild className="mt-6 bg-amber-600 hover:bg-amber-700">
-//           <Link href="/explore">Back to explore</Link>
-//         </Button>
-//       </div>
-//     );
-//   }
-
-//   const stats = [
-//     { icon: Wifi, label: "Wi-Fi", value: spot.wifi },
-//     { icon: Volume2, label: "Noise", value: spot.noise },
-//     { icon: Users, label: "Seating", value: `${spot.seating} seats` },
-//     { icon: Plug, label: "Outlets", value: spot.outlets },
-//     { icon: Clock, label: "Hours", value: spot.hours },
-//   ];
-
-//   return (
-//     <main className="bg-background min-h-screen ">
-//       {/* Navigation */}
-//       <div className="container  mx-auto pt-8">
-//         <Button variant="ghost" size="sm" asChild className="hover:text-amber-600 transition-colors">
-//           <Link href="/items">
-//             <ArrowLeft className="h-4 w-4 mr-1.5" /> Back to spots
-//           </Link>
-//         </Button>
-//       </div>
-
-//       {/* Hero Image Section */}
-//       <section className="container  mx-auto pt-6">
-//         <div className="rounded-[2.5rem] overflow-hidden relative aspect-16/8 bg-muted shadow-cozy border border-slate-100">
-//           <Image
-//             src={spot.image}
-//             alt={spot.name}
-//             fill
-//             priority
-//             className="object-cover"
-//           />
-//         </div>
-//       </section>
-
-//       {/* Content Section */}
-//       <section className="container  mx-auto py-12 grid lg:grid-cols-3 gap-12">
-//         <div className="lg:col-span-2 animate-in fade-in slide-in-from-bottom-4 duration-700">
-//           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-//             <span className="inline-flex items-center gap-1">
-//               <MapPin className="h-3.5 w-3.5" /> {spot.area}, {spot.city}
-//             </span>
-//             <span>•</span>
-//             <span className="font-medium text-slate-700">{spot.price}</span>
-//           </div>
-          
-//           <h1 className="mt-3 font-serif text-4xl md:text-5xl font-bold text-slate-900">
-//             {spot.name}
-//           </h1>
-//           <p className="mt-4 text-xl text-slate-500 italic leading-relaxed">
-//             &quot;{spot.tagline}&quot;
-//           </p>
-
-//           <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-900 px-4 py-2 text-sm font-bold">
-//             <Star className="h-4 w-4 fill-amber-500 text-amber-500" /> {spot.rating} rating
-//           </div>
-
-//           <div className="mt-10 space-y-6">
-//             <p className="text-slate-600 leading-relaxed text-lg">
-//               {spot.description}
-//             </p>
-//           </div>
-
-//           <h2 className="mt-12 font-serif text-2xl font-bold text-slate-900">What&apos;s inside</h2>
-//           <div className="mt-5 flex flex-wrap gap-3">
-//             {spot.amenities.map((a) => (
-//               <span 
-//                 key={a} 
-//                 className="rounded-xl bg-slate-100 text-slate-700 px-5 py-2 text-sm font-medium border border-slate-200"
-//               >
-//                 {a}
-//               </span>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Sidebar Info */}
-//         <aside className="lg:sticky lg:top-24 self-start animate-in fade-in zoom-in-95 duration-500">
-//           <div className="rounded-3xl bg-white border border-slate-100 shadow-cozy p-8">
-//             <h3 className="font-serif text-xl font-bold text-slate-900 mb-6 border-b pb-4">At a glance</h3>
-//             <ul className="space-y-6">
-//               {stats.map((s) => (
-//                 <li key={s.label} className="flex items-center gap-4">
-//                   <span className="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-//                     <s.icon className="h-5 w-5" />
-//                   </span>
-//                   <div className="flex-1">
-//                     <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">{s.label}</div>
-//                     <div className="text-sm font-semibold text-slate-700">{s.value}</div>
-//                   </div>
-//                 </li>
-//               ))}
-//             </ul>
-//             <Button className="w-full mt-8 h-14 bg-amber-600 text-white hover:bg-amber-700 rounded-xl font-bold shadow-lg shadow-amber-100 transition-all active:scale-95">
-//               Save to favourites
-//             </Button>
-//           </div>
-//         </aside>
-//       </section>
-//     </main>
-//   );
-// };
-
-// export default SpotDetails;
-
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { ArrowLeft, Clock, MapPin, Plug, Star, Users, Volume2, Wifi, Heart, Loader2 } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { 
+  ArrowLeft, Clock, MapPin, Plug, Star, Users, 
+  Volume2, Wifi, Heart, Loader2, Sparkles, Coffee, 
+  Badge
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { spots } from "@/app/data/spots"; 
 import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/lib/firebase";
-import { collection, doc, setDoc, deleteDoc, onSnapshot, query, where } from "firebase/firestore";
+import { 
+  doc, setDoc, deleteDoc, onSnapshot, getDoc, 
+  collection, query, where, limit, getDocs 
+} from "firebase/firestore";
 import { toast } from "react-hot-toast";
+
+interface Spot {
+  id: string;
+  name: string;
+  image: string;
+  area: string;
+  city: string;
+  wifi: string;
+  noise: string;
+  seating: number;
+  outlets: string;
+  hours: string;
+  price: string;
+  rating: number;
+  tagline: string;
+  description: string;
+  amenities: string[];
+}
 
 const SpotDetails = () => {
   const params = useParams();
   const id = params?.id as string;
+  const router = useRouter();
   const { user } = useAuth();
   
+  const [spot, setSpot] = useState<Spot | null>(null);
+  const [relatedSpots, setRelatedSpots] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
-  const spot = spots.find((s) => s.id === id);
 
-  // ১. ইউজার ফেভারিট করেছে কি না তা রিয়েলটাইম চেক করা
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchFullData = async () => {
+      setLoading(true);
+      try {
+        const docRef = doc(db, "spots", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const mainSpot = { id: docSnap.id, ...docSnap.data() } as Spot;
+          setSpot(mainSpot);
+
+          const relatedQuery = query(
+            collection(db, "spots"),
+            where("city", "==", mainSpot.city),
+            limit(4)
+          );
+          const relatedSnap = await getDocs(relatedQuery);
+          const relatedData = relatedSnap.docs
+            .map(d => ({ id: d.id, ...d.data() } as Spot))
+            .filter(d => d.id !== id); 
+          setRelatedSpots(relatedData);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("Failed to load details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFullData();
+  }, [id]);
+
   useEffect(() => {
     if (!user || !id) return;
-
     const favDocRef = doc(db, "users", user.uid, "favorites", id);
     const unsubscribe = onSnapshot(favDocRef, (doc) => {
       setIsFavorite(doc.exists());
     });
-
     return () => unsubscribe();
   }, [user, id]);
 
-  if (!spot) {
-    return (
-      <div className="container py-24 text-center mx-auto">
-        <h1 className="font-serif text-3xl font-semibold text-slate-900">Spot not found</h1>
-        <Button asChild className="mt-6 bg-amber-600 hover:bg-amber-700">
-          <Link href="/items">Back to explore</Link>
-        </Button>
-      </div>
-    );
-  }
-
-  // ২. ফেভারিট অ্যাড বা রিমুভ করার ফাংশন
   const toggleFavorite = async () => {
     if (!user) {
       toast.error("Please login to save favorites ☕");
+      router.push("/login");
+      return;
+    }
+
+    if (!spot) {
+      toast.error("Spot data not loaded");
       return;
     }
 
@@ -200,104 +124,155 @@ const SpotDetails = () => {
         toast.success("Saved to favorites!");
       }
     } catch (error) {
-      console.error("Favorite error:", error);
       toast.error("Something went wrong");
     } finally {
       setActionLoading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[70vh]">
+        <Loader2 className="h-10 w-10 animate-spin text-amber-600" />
+        <p className="mt-4 text-slate-500 font-medium italic">Preparing your workspace...</p>
+      </div>
+    );
+  }
+
+  if (!spot) {
+    return (
+      <div className="container py-24 text-center mx-auto">
+        <h1 className="font-serif text-3xl font-bold">Spot not found</h1>
+        <Button asChild className="mt-6 bg-amber-600">
+          <Link href="/items">Back to explore</Link>
+        </Button>
+      </div>
+    );
+  }
+
   const stats = [
-    { icon: Wifi, label: "Wi-Fi", value: spot.wifi },
-    { icon: Volume2, label: "Noise", value: spot.noise },
-    { icon: Users, label: "Seating", value: `${spot.seating} seats` },
-    { icon: Plug, label: "Outlets", value: spot.outlets },
-    { icon: Clock, label: "Hours", value: spot.hours },
+    { icon: Wifi, label: "Wi-Fi Speed", value: spot.wifi },
+    { icon: Volume2, label: "Noise Level", value: spot.noise },
+    { icon: Users, label: "Capacity", value: `${spot.seating} seats` },
+    { icon: Plug, label: "Power Outlets", value: spot.outlets },
+    { icon: Clock, label: "Opening Hours", value: spot.hours },
   ];
 
   return (
-    <main className="bg-background min-h-screen">
+    <main className="bg-background min-h-screen pb-20">
+      {/* Top Nav */}
       <div className="container mx-auto px-4 pt-8">
-        <Button variant="ghost" size="sm" asChild className="hover:text-amber-600 transition-colors">
-          <Link href="/items">
-            <ArrowLeft className="h-4 w-4 mr-1.5" /> Back to spots
-          </Link>
+        <Button variant="ghost" size="sm" asChild className="hover:text-amber-600">
+          <Link href="/items"><ArrowLeft className="h-4 w-4 mr-1.5" /> Back to spots</Link>
         </Button>
       </div>
 
+      {/* Hero Header */}
       <section className="container mx-auto px-4 pt-6">
-        <div className="rounded-[2.5rem] overflow-hidden relative aspect-[16/8] bg-muted shadow-cozy border border-slate-100">
+        <div className="relative aspect-21/9 rounded-4xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-100">
           <Image src={spot.image} alt={spot.name} fill priority className="object-cover" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent md:hidden" />
         </div>
       </section>
 
       <section className="container mx-auto px-4 py-12 grid lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-1">
-              <MapPin className="h-3.5 w-3.5" /> {spot.area}, {spot.city}
-            </span>
-            <span>•</span>
-            <span className="font-medium text-slate-700">{spot.price}</span>
+        {/* Main Info */}
+        <div className="lg:col-span-2 space-y-8">
+          <div>
+            <div className="flex items-center gap-3 text-amber-600 font-bold text-xs uppercase tracking-widest">
+              <Sparkles className="h-4 w-4" /> Recommended Spot
+            </div>
+            <h1 className="mt-3 font-serif text-4xl md:text-6xl font-bold text-slate-900">{spot.name}</h1>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <span className="flex items-center gap-1.5 text-slate-500 font-medium">
+                <MapPin className="h-4 w-4 text-amber-500" /> {spot.area}, {spot.city}
+              </span>
+              <Badge className="bg-slate-100 text-slate-600 hover:bg-slate-100 border-none px-3 py-1">
+                {spot.price}
+              </Badge>
+              <div className="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-sm font-bold">
+                <Star className="h-4 w-4 fill-amber-500 text-amber-500" /> {spot.rating}
+              </div>
+            </div>
           </div>
-          
-          <h1 className="mt-3 font-serif text-4xl md:text-5xl font-bold text-slate-900">{spot.name}</h1>
-          <p className="mt-4 text-xl text-slate-500 italic leading-relaxed">&quot;{spot.tagline}&quot;</p>
 
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-900 px-4 py-2 text-sm font-bold">
-            <Star className="h-4 w-4 fill-amber-500 text-amber-500" /> {spot.rating} rating
+          <div className="prose prose-slate max-w-none">
+            <p className="text-xl text-slate-500 italic leading-relaxed font-serif">
+              &quot;{spot.tagline}&quot;
+            </p>
+            <p className="mt-6 text-slate-600 leading-relaxed text-lg">
+              {spot.description}
+            </p>
           </div>
 
-          <p className="mt-10 text-slate-600 leading-relaxed text-lg">{spot.description}</p>
-
-          <h2 className="mt-12 font-serif text-2xl font-bold text-slate-900">What&apos;s inside</h2>
-          <div className="mt-5 flex flex-wrap gap-3">
-            {spot.amenities.map((a) => (
-              <span key={a} className="rounded-xl bg-slate-100 text-slate-700 px-5 py-2 text-sm font-medium border border-slate-200">{a}</span>
-            ))}
+          {/* Specifications/Amenities Section */}
+          <div>
+            <h2 className="font-serif text-2xl font-bold text-slate-900 flex items-center gap-2">
+              <Coffee className="h-6 w-6 text-amber-600" /> Amenities & Specs
+            </h2>
+            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {spot.amenities?.map((a: string) => (
+                <div key={a} className="flex items-center gap-2 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-700 font-medium text-sm">
+                  <div className="h-1.5 w-1.5 rounded-full bg-amber-500" /> {a}
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* Related Items Section */}
+          {relatedSpots.length > 0 && (
+            <div className="pt-10 border-t border-slate-100">
+              <h3 className="font-serif text-2xl font-bold text-slate-900 mb-6">More spots in {spot.city}</h3>
+              <div className="grid sm:grid-cols-2 gap-6">
+                {relatedSpots.map((rs) => (
+                  <Link key={rs.id} href={`/items/${rs.id}`} className="group flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-all">
+                    <div className="relative h-20 w-20 shrink-0 rounded-xl overflow-hidden">
+                      <Image src={rs.image} alt={rs.name} fill className="object-cover" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900 group-hover:text-amber-600 transition-colors">{rs.name}</h4>
+                      <p className="text-xs text-slate-500 mt-1">{rs.area}</p>
+                      <div className="mt-2 flex items-center gap-2 text-[10px] font-bold uppercase text-amber-600">
+                        {rs.wifi} WiFi • {rs.noise}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
+        {/* Sidebar Card */}
         <aside className="lg:sticky lg:top-24 self-start">
-          <div className="rounded-3xl bg-white border border-slate-100 shadow-cozy p-8">
-            <h3 className="font-serif text-xl font-bold text-slate-900 mb-6 border-b pb-4">At a glance</h3>
+          <div className="rounded-4xl bg-white border border-slate-100 shadow-xl p-8">
+            <h3 className="font-serif text-xl font-bold text-slate-900 mb-6 border-b border-slate-50 pb-4">Work Readiness</h3>
             <ul className="space-y-6">
               {stats.map((s) => (
                 <li key={s.label} className="flex items-center gap-4">
-                  <span className="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                  <span className="h-12 w-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
                     <s.icon className="h-5 w-5" />
                   </span>
                   <div className="flex-1">
-                    <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">{s.label}</div>
-                    <div className="text-sm font-semibold text-slate-700">{s.value}</div>
+                    <div className="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold">{s.label}</div>
+                    <div className="text-sm font-bold text-slate-700">{s.value}</div>
                   </div>
                 </li>
               ))}
             </ul>
 
-            {/* ৩. সাবমিট বাটন লজিক */}
             <Button 
               onClick={toggleFavorite}
               disabled={actionLoading}
-              className={`w-full mt-8 h-14 rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2 ${
+              className={`w-full mt-8 h-14 rounded-2xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg ${
                 isFavorite 
-                ? "bg-rose-50 text-rose-600 border border-rose-100 hover:bg-rose-100" 
-                : "bg-amber-600 text-white hover:bg-amber-700 shadow-lg shadow-amber-100"
+                ? "bg-rose-50 text-rose-600 border border-rose-100 hover:bg-rose-100 shadow-rose-100" 
+                : "bg-amber-600 text-white hover:bg-amber-700 shadow-amber-100"
               }`}
             >
-              {actionLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : isFavorite ? (
-                <>
-                  <Heart className="h-5 w-5 fill-current" /> Saved to Favourites
-                </>
-              ) : (
-                <>
-                  <Heart className="h-5 w-5" /> Save to Favourites
-                </>
-              )}
+              {actionLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : isFavorite ? <><Heart className="h-5 w-5 fill-current" /> Favorited</> : <><Heart className="h-5 w-5" /> Save to Favourites</>}
             </Button>
-            {!user && <p className="text-[10px] text-center mt-3 text-slate-400 italic">Login required to save</p>}
+            {!user && <p className="text-[10px] text-center mt-4 text-slate-400 font-medium italic">Login required to save this spot</p>}
           </div>
         </aside>
       </section>
