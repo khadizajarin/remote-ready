@@ -4,7 +4,6 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Tomar Firebase Console theke pawa credentials ekhane boshau
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -15,10 +14,8 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Next.js client-side refresh-e jate bar bar app initialize na hoy, sheta handle kora
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-// Services export kora
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 

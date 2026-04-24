@@ -63,6 +63,7 @@ export default function HomePage() {
           src={heroImg}
           alt="A cozy cafe with a laptop and steaming latte"
           fill
+          sizes="700"
           priority
           className="absolute inset-0 h-full w-full object-cover"
         />

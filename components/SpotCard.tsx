@@ -25,7 +25,7 @@ const SpotCard = ({ spot }: { spot: Spot }) => {
       className="group block rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 hover:border-amber-200"
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+      <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
         <Image
           src={image}
           alt={name}

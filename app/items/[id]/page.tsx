@@ -170,7 +170,7 @@ const SpotDetails = () => {
       {/* Hero Header */}
       <section className="container mx-auto px-4 pt-6">
         <div className="relative aspect-21/9 rounded-4xl md:rounded-[3rem] overflow-hidden shadow-2xl border border-slate-100">
-          <Image src={spot.image} alt={spot.name} fill priority className="object-cover" />
+          <Image src={spot.image} alt={spot.name} sizes="700" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent md:hidden" />
         </div>
       </section>
@@ -227,7 +227,7 @@ const SpotDetails = () => {
                 {relatedSpots.map((rs) => (
                   <Link key={rs.id} href={`/items/${rs.id}`} className="group flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-all">
                     <div className="relative h-20 w-20 shrink-0 rounded-xl overflow-hidden">
-                      <Image src={rs.image} alt={rs.name} fill className="object-cover" />
+                      <Image src={rs.image} alt={rs.name} fill sizes="700" className="object-cover" />
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900 group-hover:text-amber-600 transition-colors">{rs.name}</h4>
