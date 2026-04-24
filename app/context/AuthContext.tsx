@@ -7,7 +7,9 @@ import {
   User as FirebaseUser,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  GoogleAuthProvider, 
+  signInWithPopup
 } from "firebase/auth";
 import { auth } from "@/lib/firebase"; 
 
@@ -17,6 +19,7 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  googleLogin: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,7 +29,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firebase observer: ইউজার লগইন/আউট ট্র্যাক করে
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -44,12 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = async (name: string, email: string, password: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
-    // রেজিস্টার হওয়ার পর ইউজারের নাম আপডেট করা
     if (userCredential.user) {
       await updateProfile(userCredential.user, {
         displayName: name,
       });
-      // আপডেট হওয়ার পর স্টেট রিফ্রেশ করার জন্য
       setUser({ ...userCredential.user, displayName: name });
     }
   };
@@ -64,8 +64,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // 4. Google Login Function
+const googleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    throw error;
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, googleLogin }}>
       {!loading && children} 
     </AuthContext.Provider>
   );

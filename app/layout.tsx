@@ -8,15 +8,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { Inter, Playfair_Display } from "next/font/google"; // Google Fonts
 import { cn } from "@/lib/utils";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 const sans = Inter({
   subsets: ["latin"],
@@ -28,15 +19,11 @@ const serif = Playfair_Display({
   variable: "--font-serif",
 });
 
-// export const metadata: Metadata = {
-//   title: "Remote Ready | Find Your Perfect Workspace",
-//   description: "Find the best independent cafes to work from. Community-led insights for remote workers.",
-// };
+
 export const metadata: Metadata = {
   title: "Remote Ready | Find Your Perfect Workspace",
   description: "Find the best independent cafes to work from. Community-led insights for remote workers.",
-  
-  // Open Graph (Facebook, WhatsApp)
+
   openGraph: {
     title: "Remote Ready",
     description: "Discover cozy cafes with great Wi-Fi and even better coffee.",
@@ -52,19 +39,6 @@ export const metadata: Metadata = {
     ],
     locale: "en_US",
     type: "website",
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: "Remote Ready",
-    description: "Find your next favourite cafe to work from.",
-    images: ["/og-image.png"], 
-  },
-
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.png",
-    apple: "/apple-touch-icon.png",
   },
 };
 
