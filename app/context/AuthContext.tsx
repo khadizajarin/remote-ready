@@ -9,7 +9,8 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   GoogleAuthProvider, 
-  signInWithPopup
+  signInWithPopup,
+  signInWithRedirect
 } from "firebase/auth";
 import { auth } from "@/lib/firebase"; 
 
@@ -68,7 +69,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 const googleLogin = async () => {
   const provider = new GoogleAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
+    // await signInWithPopup(auth, provider);
+    await signInWithRedirect(auth, provider);
   } catch (error) {
     console.error("Google Login Error:", error);
     throw error;

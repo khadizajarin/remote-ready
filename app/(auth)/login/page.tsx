@@ -124,7 +124,7 @@ const Login = () => {
             {loading ? "Signing in..." : "Sign in"}
           </Button>
 
-          {/* ৩. Or continue with Divider */}
+          {/* 3. Or continue with Divider */}
           <div className="relative py-2">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-slate-100"></span>
@@ -134,7 +134,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* ৪. Google Login Button */}
+          {/* 4. Google Login Button */}
           <Button
             type="button"
             variant="outline"
